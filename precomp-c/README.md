@@ -1,149 +1,257 @@
-# Precomp C - C Implementation for Tiny C Compiler
+# precomp-c
 
-This is a C conversion of the precomp-cpp project, designed to be compilable with the Tiny C Compiler (TCC).
+A pure C port of precomp (originally precomp-cpp), a free precompression tool for advanced compression. This version is designed to be compiled with Tiny C Compiler (TCC) and other standard C compilers, making it highly portable across different platforms.
 
-## Overview
+## Features
 
-The original precomp-cpp is a C++17 project (~8,300 lines) that uses many C++ features incompatible with TCC:
-- Classes and inheritance
-- STL containers (vector, map, string, etc.)
-- Templates
-- Smart pointers
-- Exceptions
-- Lambda functions
-- Threads and mutexes
+- **Pure C99 code** - No C++ dependencies, compatible with TCC
+- **Cross-platform** - Works on Windows, Linux, macOS, BSD
+- **Self-contained** - All required libraries bundled in `contrib/`
+- **Multiple formats** - Support for ZIP, GZIP, PNG, JPEG, GIF, PDF, SWF, BZIP2, and more
+- **Flexible build system** - Shell scripts, batch files, and Makefile included
 
-This C version replaces these with:
-- Structs with function pointer vtables
-- Manual memory management
-- Error codes instead of exceptions
-- Simple callback functions
-- Platform-specific implementations
+## Supported Formats
 
-## Files Created
+| Format | Extension | Description |
+|--------|-----------|-------------|
+| Deflate | .deflate | Raw deflate compression |
+| GZIP | .gz | GNU Zip compression |
+| Zlib | .zlib | Zlib wrapper |
+| ZIP | .zip | ZIP archives |
+| BZIP2 | .bz2 | BZip2 compression |
+| PNG | .png | Portable Network Graphics |
+| JPEG | .jpg, .jpeg | Joint Photographic Experts Group |
+| GIF | .gif | Graphics Interchange Format |
+| PDF | .pdf | Portable Document Format |
+| SWF | .swf | Shockwave Flash |
+| MP3 | .mp3 | MPEG Audio Layer 3 |
+| Base64 | .b64 | Base64 encoding |
 
-### Core Library
-- `precomp_lib.h` - Main public API header (C-friendly)
-- `precomp_lib.c` - Library implementation
-- `precomp.h` - Internal core structures
-- `precomp.c` - Core Precomp class implementation
-- `precomp_io.h` - I/O stream interface
-- `precomp_io.c` - I/O implementation
-- `precomp_utils.h` - Utility functions header
-- `precomp_utils.c` - Utility functions implementation
+## Directory Structure
 
-### Test Program
-- `test_precomp.c` - Example usage program
-
-## Building with TCC
-
-```bash
-# Compile the library
-tcc -c precomp_utils.c -o precomp_utils.o
-tcc -c precomp_io.c -o precomp_io.o
-tcc -c precomp.c -o precomp.o
-tcc -c precomp_lib.c -o precomp_lib.o
-
-# Create static library
-tcc -ar libprecomp.a precomp_utils.o precomp_io.o precomp.o precomp_lib.o
-
-# Compile test program
-tcc test_precomp.c -L. -lprecomp -o precomp_test.exe
+```
+precomp-c/
+├── src/                    # Source files
+│   ├── main.c             # Main entry point
+│   ├── precomp.c          # Core precompression logic
+│   ├── precomp_io.c       # I/O handling
+│   ├── precomp_lib.c      # Library interface
+│   ├── precomp_utils.c    # Utility functions
+│   └── formats/           # Format handlers
+│       ├── base64.c
+│       ├── bzip2.c
+│       ├── deflate.c
+│       ├── format_handlers.c
+│       ├── gif.c
+│       ├── gzip.c
+│       ├── jpeg.c
+│       ├── mp3.c
+│       ├── pdf.c
+│       ├── png.c
+│       ├── swf.c
+│       ├── zip.c
+│       └── zlib.c
+├── include/                # Header files
+│   ├── config.h           # Configuration
+│   ├── precomp.h          # Main header
+│   ├── precomp_io.h       # I/O header
+│   ├── precomp_lib.h      # Library header
+│   ├── precomp_utils.h    # Utils header
+│   └── formats/           # Format headers
+├── contrib/                # External libraries (bundled)
+│   ├── zlib/              # Zlib compression
+│   ├── bzip2/             # BZip2 compression
+│   ├── giflib/            # GIF library
+│   ├── libjpeg/           # JPEG library
+│   └── libpng/            # PNG library
+├── build/                  # Build output (created during build)
+├── build.sh               # Unix/Linux/macOS build script
+├── build.bat              # Windows build script
+├── Makefile               # GNU Make build file
+└── README.md              # This file
 ```
 
-Or compile all at once:
+## Building
+
+### Prerequisites
+
+- **Tiny C Compiler (TCC)** recommended, or any C99-compatible compiler
+- **Git** (for cloning and optional TCC auto-setup)
+- **curl** or **wget** (for downloading TCC if not installed)
+- **make** (optional, for using the Makefile)
+
+The build scripts can automatically download and build TCC if it's not found on your system.
+
+### Quick Start
+
+#### Linux/macOS/BSD
+
 ```bash
-tcc precomp_utils.c precomp_io.c precomp.c precomp_lib.c test_precomp.c -o precomp_test.exe
+# Using the shell script
+./build.sh              # Build release version
+./build.sh debug        # Build with debug symbols
+./build.sh clean        # Clean build artifacts
+
+# Or using make
+make                    # Build release version
+make debug              # Build with debug symbols
+make clean              # Clean build
+
+# Install to /usr/local
+sudo make install
+
+# Install to custom location
+make install PREFIX=/opt/precomp
+```
+
+#### Windows (CMD)
+
+```cmd
+REM Using the batch script
+build.bat               # Build release version
+build.bat debug         # Build with debug symbols
+build.bat clean         # Clean build artifacts
+```
+
+#### Windows (PowerShell/WSL/Git Bash)
+
+```powershell
+# Use the Unix shell script
+.\build.sh build
+.\build.sh clean
+```
+
+### Build Options
+
+#### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `CC` | C compiler to use | `tcc` |
+| `CFLAGS` | Additional compiler flags | (none) |
+| `SKIP_TCC_SETUP` | Skip automatic TCC setup | `0` |
+| `PREFIX` | Installation prefix | `/usr/local` |
+| `DEBUG` | Enable debug build | `0` |
+
+#### Examples
+
+```bash
+# Use GCC instead of TCC
+CC=gcc ./build.sh
+
+# Use Clang with custom flags
+CC=clang CFLAGS="-O3 -march=native" ./build.sh
+
+# Skip TCC auto-setup (if already installed)
+SKIP_TCC_SETUP=1 ./build.sh
+
+# Debug build with TCC
+./build.sh debug
+
+# Custom installation path
+make install PREFIX=$HOME/.local
+```
+
+### Manual Build with TCC
+
+If you prefer to build manually:
+
+```bash
+mkdir build
+tcc -Iinclude -Icontrib/zlib -Icontrib/bzip2 \
+    -Icontrib/giflib -Icontrib/libjpeg -Icontrib/libpng \
+    -o build/precomp src/*.c src/formats/*.c \
+    contrib/zlib/*.c contrib/bzip2/*.c contrib/giflib/*.c \
+    contrib/libjpeg/*.c contrib/libpng/*.c
 ```
 
 ## Usage
 
+Once built, use precomp like this:
+
 ```bash
-# Decompress a .pcf file
-./precomp_test d input.pcf output.bin
+# Compress a file
+./build/precomp -c input.file output.pcp
 
-# Compress/precompress a file
-./precomp_test c input.bin output.pcf
+# Decompress a file
+./build/precomp -d input.pcp output.file
+
+# Show help
+./build/precomp -h
 ```
 
-## API Overview
+For detailed usage information, run `./build/precomp --help`.
 
-### Basic Usage
-```c
-#include "precomp_lib.h"
+## Platform-Specific Notes
 
-// Create instance
-PcompInstance* inst = pcomp_create();
+### Linux
 
-// Configure
-PcompSwitches* sw = pcomp_get_switches(inst);
-pcomp_switch_set_jpg(sw, true);
-pcomp_switch_set_png(sw, true);
+- TCC is available in most package managers: `sudo apt install tcc` (Debian/Ubuntu)
+- Prebuilt binaries work on most modern distributions
 
-// Set callbacks
-pcomp_set_progress_callback(inst, my_progress_fn);
-pcomp_set_log_callback(my_log_fn);
+### macOS
 
-// Open files
-FILE* in = fopen("input.bin", "rb");
-FILE* out = fopen("output.pcf", "wb");
+- TCC must be built from source (included in build process)
+- Requires Xcode Command Line Tools: `xcode-select --install`
+- Homebrew alternative: `brew install tinycc`
 
-pcomp_set_input_file(inst, in, "input.bin");
-pcomp_set_output_file(inst, out, "output.pcf");
+### Windows
 
-// Precompress
-int result = pcomp_precompress(inst);
+- Download TCC from https://download.savannah.gnu.org/releases/tinycc/
+- Add TCC to your PATH, or the build script will look for it locally
+- Works on Windows 7 and later
 
-// Cleanup
-fclose(in);
-fclose(out);
-pcomp_destroy(inst);
-```
+### BSD
 
-## Current Status
+- FreeBSD/OpenBSD supported via generic BSD flags
+- May need to install git and build tools first
 
-### Implemented
-- [x] Core data structures
-- [x] I/O stream abstraction
-- [x] Utility functions
-- [x] Main Precomp class skeleton
-- [x] C-friendly API wrapper
-- [x] Test program
+## Troubleshooting
 
-### TODO / Incomplete
-- [ ] Full precompression logic (format detection, compression)
-- [ ] Full recompression logic (header parsing, decompression)
-- [ ] Format handlers (PDF, ZIP, PNG, JPEG, GIF, MP3, BZIP2)
-- [ ] Deflate/zlib integration
-- [ ] Recursion support
-- [ ] Intense/brute modes
-- [ ] Threading support (if needed for TCC)
-- [ ] Complete error handling
+### TCC Not Found
 
-## Notes
+The build scripts will attempt to automatically download and build TCC. If this fails:
 
-1. **Memory Management**: All allocations must be freed manually. The library provides destroy functions for each type.
+1. Install TCC manually from https://download.savannah.gnu.org/releases/tinycc/
+2. Add TCC to your PATH
+3. Or set `SKIP_TCC_SETUP=1` and specify a compiler with `CC=`
 
-2. **Error Handling**: Uses return codes instead of exceptions. Check return values!
+### Build Errors
 
-3. **Thread Safety**: Currently not thread-safe. TCC doesn't have built-in threading like C++17.
+- Ensure all submodules are initialized: `git submodule update --init --recursive`
+- Check that you have write permissions in the build directory
+- Try a clean build: `./build.sh clean && ./build.sh`
 
-4. **Platform Support**: Works on Windows and Unix-like systems. Binary mode is automatic on Unix.
+### Missing Libraries
 
-5. **Dependencies**: This pure C version removes dependencies on Boost, C++ STL, and other C++ libraries. External compression libraries (zlib, bzip2, etc.) would need C wrappers or direct C implementations.
+All required libraries are bundled in the `contrib/` directory. If you encounter missing header errors:
 
-## Comparison with Original
+1. Verify the contrib directory exists and contains the libraries
+2. Check that the include paths in the build script are correct
+3. Try building the contrib libraries separately if needed
 
-| Feature | C++ Version | C Version |
-|---------|-------------|-----------|
-| Lines of Code | ~8,300 | ~1,500 (core so far) |
-| Compiler | GCC/Clang (C++17) | TCC/GCC (C99) |
-| Memory | RAII, smart pointers | Manual malloc/free |
-| Errors | Exceptions | Return codes |
-| Polymorphism | Virtual methods | Function pointers |
-| Containers | std::vector, std::map | Arrays, manual lists |
-| Strings | std::string | char* |
+## Contributing
 
-## Next Steps
+Contributions are welcome! Please ensure that:
 
-To complete the conversion, each format handler and compression algorithm needs to be converted from C++ to C following the same patterns used in the core files.
+1. All code is pure C99 (no C++ features)
+2. Code is portable across Windows, Linux, macOS, and BSD
+3. No new external dependencies are added without discussion
+4. Changes are tested with TCC
+
+## License
+
+This project is a C port of precomp-cpp. See the original repository for licensing details:
+https://github.com/nicolas-comerci/precomp-cpp
+
+## Acknowledgments
+
+- Original precomp-cpp by Nicolas Comerci
+- TCC team for the Tiny C Compiler
+- All contributors to zlib, bzip2, libjpeg, libpng, and giflib
+
+## Links
+
+- Original Project: https://github.com/nicolas-comerci/precomp-cpp
+- TCC Repository: https://repo.or.cz/tinycc.git
+- TCC Downloads: https://download.savannah.gnu.org/releases/tinycc/

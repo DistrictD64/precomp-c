@@ -136,17 +136,47 @@ void pcomp_switch_set_mp3(PcompSwitches* sw, bool val);
 bool pcomp_switch_get_swf(PcompSwitches* sw);
 void pcomp_switch_set_swf(PcompSwitches* sw, bool val);
 
+/* ============ Switch Getters/Setters ============ */
+
+bool pcomp_switch_get_pdf(PcompSwitches* sw);
+void pcomp_switch_set_pdf(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_zip(PcompSwitches* sw);
+void pcomp_switch_set_zip(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_gzip(PcompSwitches* sw);
+void pcomp_switch_set_gzip(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_png(PcompSwitches* sw);
+void pcomp_switch_set_png(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_gif(PcompSwitches* sw);
+void pcomp_switch_set_gif(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_jpg(PcompSwitches* sw);
+void pcomp_switch_set_jpg(PcompSwitches* sw, bool val);
+
+bool pcomp_switch_get_swf(PcompSwitches* sw);
+void pcomp_switch_set_swf(PcompSwitches* sw, bool val);
+
 bool pcomp_switch_get_base64(PcompSwitches* sw);
 void pcomp_switch_set_base64(PcompSwitches* sw, bool val);
 
 bool pcomp_switch_get_bzip2(PcompSwitches* sw);
 void pcomp_switch_set_bzip2(PcompSwitches* sw, bool val);
 
+bool pcomp_switch_get_mp3(PcompSwitches* sw);
+void pcomp_switch_set_mp3(PcompSwitches* sw, bool val);
+
 unsigned int pcomp_switch_get_min_ident_size(PcompSwitches* sw);
 void pcomp_switch_set_min_ident_size(PcompSwitches* sw, unsigned int val);
 
 int pcomp_switch_get_max_recursion(PcompSwitches* sw);
 void pcomp_switch_set_max_recursion(PcompSwitches* sw, int val);
+
+/* Direct struct access macros for C convenience (optional) */
+#define PCOMP_SWITCH_GET_FIELD(sw, field) ((sw)->field)
+#define PCOMP_SWITCH_SET_FIELD(sw, field, val) do { (sw)->field = (val); } while(0)
 
 /* Set ignore positions list */
 void pcomp_switch_set_ignore_list(PcompSwitches* sw, const long long* list, size_t count);
