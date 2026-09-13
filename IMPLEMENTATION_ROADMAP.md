@@ -17,6 +17,7 @@ This document outlines all features and formats that need to be implemented for 
 - [x] LICENSE file with Apache 2.0 and third-party notices
 - [x] Directory structure for contrib libraries
 - [x] This roadmap document
+- [x] FLAC audio format handler (detection, analysis, compression parameters, reconstruction)
 
 ### 🔨 IN PROGRESS
 - [ ] Core infrastructure implementation
@@ -81,7 +82,7 @@ This document outlines all features and formats that need to be implemented for 
 |--------|---------------|--------------|--------|----------|------------------|-------------------------|
 | **MP3** | 120 | 445 | ❌ Incomplete | HIGH | packmp3 + libmpg123 | packmp3 / FLAC |
 | **OGG Vorbis** | 0 | ~350 | ❌ Missing | MEDIUM | libvorbis | FLAC |
-| **FLAC** | 0 | ~300 | ❌ Missing | HIGH | libflac | FLAC optimization |
+| **FLAC** | 394 | ~300 | ✅ Complete | HIGH | libflac | FLAC optimization |
 | **WAV** | 0 | ~250 | ❌ Missing | HIGH | - | WavPack / FLAC |
 | **AAC** | 0 | ~350 | ❌ Missing | LOW | fdkaac | FLAC |
 
@@ -282,6 +283,71 @@ PreComp Header Structure:
 ## 🤝 CONTRIBUTING
 
 See CONTRIBUTING.md for guidelines on adding new format handlers and improving existing ones.
+
+---
+
+## 📦 EXTERNAL LIBRARY INTEGRATION POLICY
+
+### Bundled Source Code Approach
+
+All external open source library dependencies must be **included directly in the repository** under the `contrib/` directory rather than using system dependencies or submodules.
+
+#### Integration Requirements:
+
+| Requirement | Description | Status |
+|-------------|-------------|--------|
+| **Bundle all sources** | Copy library source code into `contrib/<library-name>/` | ❌ Not implemented |
+| **C99 compliance** | All bundled code must compile as C99/C11 | ❌ Not enforced |
+| **Non-C code conversion** | Convert C++/other languages to C where feasible | ❌ Roadmap needed |
+| **Build integration** | Makefile/CMake must build contrib libraries | ❌ Not implemented |
+| **License compliance** | Maintain original licenses in `LICENSE.third-party` | ✅ Partially done |
+
+### C Conversion Strategy
+
+For libraries not written in C:
+
+1. **Evaluate feasibility**: Assess complexity of converting to C
+   - Simple C++ (classes with minimal features) → Convertible
+   - Heavy C++ (templates, STL, exceptions) → May need wrapper approach
+   - Other languages (Rust, Go, etc.) → Reimplement or find C alternative
+
+2. **Conversion approaches**:
+   - **Direct translation**: Rewrite logic in C (preferred for simple cases)
+   - **C wrapper layer**: Create C API around C++ code (if keeping C++ is necessary)
+   - **Alternative library**: Find existing C library with similar functionality
+
+3. **Long-term conversion projects** (add to roadmap if >1 week effort):
+   - [ ] **brunsli** (C++ WebP codec) → Needs C conversion or wrapper
+   - [ ] **packjpg** (C++ JPEG optimizer) → Needs C conversion or wrapper  
+   - [ ] **packmp3** (C++ MP3 optimizer) → Needs C conversion or wrapper
+   - [ ] **preflate** (C++ DEFLATE reconstructor) → Needs C conversion or wrapper
+
+### Contrib Directory Structure:
+
+```
+contrib/
+├── zlib/           # DEFLATE compression (C - ready)
+├── bzip2/          # BZIP2 compression (C - ready)
+├── libpng/         # PNG handling (C - ready)
+├── libjpeg-turbo/  # JPEG handling (C - ready)
+├── brunsli/        # WebP lossless (C++ - NEEDS CONVERSION) ⚠️
+├── packjpg/        # JPEG optimization (C++ - NEEDS CONVERSION) ⚠️
+├── packmp3/        # MP3 optimization (C++ - NEEDS CONVERSION) ⚠️
+├── preflate/       # DEFLATE reconstruction (C++ - NEEDS CONVERSION) ⚠️
+├── libflac/        # FLAC audio (C - ready)
+├── libzstd/        # ZSTD compression (C - ready)
+└── ...             # Additional libraries
+```
+
+### Implementation Tasks:
+
+- [ ] Create script to download and verify library sources
+- [ ] Set up contrib/ directory structure
+- [ ] Audit each library for C compliance
+- [ ] Prioritize C++ to C conversion projects
+- [ ] Create wrapper headers for any remaining C++ libraries
+- [ ] Update build system to compile bundled sources
+- [ ] Document conversion progress for each library
 
 ---
 
