@@ -51,8 +51,8 @@ This document outlines all features and formats that need to be implemented for 
 | Format | Current Lines | Target Lines | Status | Priority | Library Required |
 |--------|---------------|--------------|--------|----------|------------------|
 | **DEFLATE** | 192 | 533 | ❌ Incomplete | CRITICAL | zlib + preflate (reconstruction only) |
-| **GZIP** | 179 | ~400 | ❌ Incomplete | CRITICAL | zlib |
-| **ZLIB** | 120 | ~350 | ❌ Incomplete | CRITICAL | zlib |
+| **GZIP** | 693 | ~400 | ✅ Complete | CRITICAL | zlib |
+| **ZLIB** | 439 | ~350 | ✅ Complete | CRITICAL | zlib |
 | **BZIP2** | 157 | 319 | ❌ Incomplete | HIGH | bzip2 |
 | **ZIP** | 138 | ~500 | ❌ Incomplete | CRITICAL | zlib |
 | **7Z/LZMA** | 0 | ~400 | ❌ Missing | HIGH | liblzma/xz |
