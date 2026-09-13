@@ -18,6 +18,7 @@ This document outlines all features and formats that need to be implemented for 
 - [x] Directory structure for contrib libraries
 - [x] This roadmap document
 - [x] FLAC audio format handler (detection, analysis, compression parameters, reconstruction)
+- [x] BZIP2 stream handler (detection, block size parsing, compression level detection, header validation, reconstruction support)
 
 ### 🔨 IN PROGRESS
 - [ ] Core infrastructure implementation
@@ -54,7 +55,7 @@ This document outlines all features and formats that need to be implemented for 
 | **DEFLATE** | 192 | 533 | ❌ Incomplete | CRITICAL | zlib + preflate (reconstruction only) |
 | **GZIP** | 693 | ~400 | ✅ Complete | CRITICAL | zlib |
 | **ZLIB** | 439 | ~350 | ✅ Complete | CRITICAL | zlib |
-| **BZIP2** | 157 | 319 | ❌ Incomplete | HIGH | bzip2 |
+| **BZIP2** | 431 | 319 | ✅ Complete | HIGH | bzip2 |
 | **ZIP** | 138 | ~500 | ❌ Incomplete | CRITICAL | zlib |
 | **7Z/LZMA** | 0 | ~400 | ❌ Missing | HIGH | liblzma/xz |
 | **ZSTD** | 0 | ~350 | ❌ Missing | HIGH | libzstd |
@@ -284,6 +285,36 @@ PreComp Header Structure:
 
 See CONTRIBUTING.md for guidelines on adding new format handlers and improving existing ones.
 
+### ⚠️ IMPORTANT: Keep This Roadmap Updated
+
+**Whenever you make ANY change to the codebase, you MUST update this IMPLEMENTATION_ROADMAP.md file accordingly.**
+
+This ensures all team members know the current state of the project.
+
+#### What to Update:
+
+| Change Type | What to Update in Roadmap | Example |
+|-------------|--------------------------|---------|
+| **Complete a feature** | Move item from "IN PROGRESS" or "NOT STARTED" to "COMPLETED" section | BZIP2 handler: Changed status from "Incomplete" to "Complete" |
+| **Add new functionality** | Add entry to "COMPLETED" section with brief description | Added "BZIP2 stream handler (detection, block size parsing...)" |
+| **Modify existing feature** | Update the description/notes for that feature | Updated BZIP2 target lines after implementation |
+| **Change line counts** | Update "Current Lines" column in format tables | BZIP2: 157 → 431 lines |
+| **Start working on something** | Move item to "IN PROGRESS" section | Moving DEFLATE to "IN PROGRESS" when starting work |
+| **Remove/deprecate feature** | Move to appropriate section with reason | SWF/Base64 marked as "REMOVE" |
+| **Fix bugs** | Note significant bug fixes in relevant section | "Fixed CRC32 calculation in GZIP handler" |
+| **Add tests** | Check off test requirements in TESTING REQUIREMENTS | "[x] Unit tests for BZIP2 handler" |
+
+#### Quick Update Checklist:
+
+Before committing any code change:
+- [ ] Did I complete a new feature? → Add to COMPLETED section
+- [ ] Did I modify an existing feature? → Update its description/line count
+- [ ] Did I change the status of anything? → Update the status tables
+- [ ] Did I add/remove files? → Update line count totals
+- [ ] Is the roadmap now accurate? → Verify all changes reflected
+
+**Remember**: An outdated roadmap is worse than no roadmap at all. Always keep it synchronized with the actual code state!
+
 ---
 
 ## 📦 EXTERNAL LIBRARY INTEGRATION POLICY
@@ -292,11 +323,30 @@ See CONTRIBUTING.md for guidelines on adding new format handlers and improving e
 
 All external open source library dependencies must be **included directly in the repository** under the `contrib/` directory rather than using system dependencies or submodules.
 
+#### ⚠️ CRITICAL RULE: 100% Complete Source Inclusion
+
+**If an open source library exists that can accomplish a task, you MUST include 100% of its source code in the repository under `contrib/<library-name>/`.**
+
+- **DO NOT** rely on system-installed libraries
+- **DO NOT** use git submodules as a shortcut
+- **DO NOT** expect users to install dependencies separately
+- **DO** copy the entire source tree into `contrib/`
+- **DO** ensure all necessary files are present for building
+- **DO** verify the build works standalone within the repo
+
+This ensures:
+- Reproducible builds across all platforms
+- No dependency hell for users
+- Complete control over library versions and patches
+- Self-contained repository that works out-of-the-box
+- Clear visibility of all third-party code included
+
 #### Integration Requirements:
 
 | Requirement | Description | Status |
 |-------------|-------------|--------|
 | **Bundle all sources** | Copy library source code into `contrib/<library-name>/` | ❌ Not implemented |
+| **100% inclusion rule** | If a library exists, include ALL its source files in repo | ❌ Not enforced |
 | **C99 compliance** | All bundled code must compile as C99/C11 | ❌ Not enforced |
 | **Non-C code conversion** | Convert C++/other languages to C where feasible | ❌ Roadmap needed |
 | **Build integration** | Makefile/CMake must build contrib libraries | ❌ Not implemented |
