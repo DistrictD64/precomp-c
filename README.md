@@ -301,16 +301,18 @@ Contributions are welcome! Please ensure that:
 ## License
 
 This project is a C port of precomp-cpp. See the original repository for licensing details:
-https://github.com/nicolas-comerci/precomp-cpp
+https://github.com/schnaader/precomp-cpp
 
 ## Acknowledgments
 
-- Original precomp-cpp by Nicolas Comerci
+- **Original Author:** [schnaader/precomp-cpp](https://github.com/schnaader/precomp-cpp) - The original precomp-cpp project by Nicolas Comerci
+- **Conversion Base:** [nicolas-comerci/precomp-cpp](https://github.com/nicolas-comerci/precomp-cpp) - This fork was used as the specific base for the C conversion
 - TCC team for the Tiny C Compiler
 - All contributors to zlib, bzip2, libjpeg, libpng, and giflib
 
 ## Links
 
-- Original Project: https://github.com/nicolas-comerci/precomp-cpp
+- Original Project: https://github.com/schnaader/precomp-cpp
+- Conversion Fork: https://github.com/nicolas-comerci/precomp-cpp
 - TCC Repository: https://repo.or.cz/tinycc.git
 - TCC Downloads: https://download.savannah.gnu.org/releases/tinycc/

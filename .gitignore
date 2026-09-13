@@ -1,4 +1,4 @@
-```
+```c
 # Compiled and build artifacts
 *.o
 *.obj
@@ -7,17 +7,15 @@
 *.dll
 *.exe
 *.out
-build/
-dist/
-target/
 
 # Dependencies
-node_modules/
 venv/
 .venv/
 __pycache__/
-.mypy_cache/
-.pytest_cache/
+*.egg-info/
+dist/
+build/
+target/
 .gradle/
 
 # Logs and temp files
@@ -34,8 +32,10 @@ __pycache__/
 # Editors
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
 
