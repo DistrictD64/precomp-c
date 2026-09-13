@@ -26,7 +26,9 @@ typedef enum {
     F_BZIP2 = 10,
     F_ZLIB = 11,
     F_BRUTE = 12,
-    D_BRUTE = 13
+    D_BRUTE = 13,
+    F_WAV = 14,
+    FORMAT_COUNT
 } SupportedFormats;
 
 /* Precompression result base structure */
@@ -145,6 +147,7 @@ typedef struct {
     unsigned int recompressed_bzip2_count;
     unsigned int recompressed_zlib_count;
     unsigned int recompressed_brute_count;
+    unsigned int recompressed_wav_count;
     
     unsigned int decompressed_streams_count;
     unsigned int decompressed_pdf_count;
@@ -163,6 +166,7 @@ typedef struct {
     unsigned int decompressed_bzip2_count;
     unsigned int decompressed_zlib_count;
     unsigned int decompressed_brute_count;
+    unsigned int decompressed_wav_count;
     
     int max_recursion_depth_used;
     bool max_recursion_depth_reached;
@@ -216,5 +220,6 @@ PrecompFormatHandler* create_jpeg_handler(void);
 PrecompFormatHandler* create_gif_handler(void);
 PrecompFormatHandler* create_mp3_handler(void);
 PrecompFormatHandler* create_bzip2_handler(void);
+PrecompFormatHandler* create_wav_handler(void);
 
 #endif /* PRECOMP_H */
