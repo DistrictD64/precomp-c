@@ -1,26 +1,30 @@
 ```
-# Build artifacts
-build/
-dist/
+# Compiled and build artifacts
 *.o
 *.obj
-*.exe
-*.dll
-*.so
 *.a
+*.so
+*.dll
+*.exe
 *.out
+build/
+dist/
+target/
 
 # Dependencies
-contrib/bzip2/
-contrib/giflib/
-contrib/libjpeg/
-contrib/libpng/
-contrib/zlib/
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.gradle/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
 
 # Environment
 .env
@@ -31,7 +35,7 @@ contrib/zlib/
 .vscode/
 .idea/
 
-# OS specific
+# System files
 .DS_Store
 Thumbs.db
 
