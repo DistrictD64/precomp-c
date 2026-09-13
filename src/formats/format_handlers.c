@@ -14,6 +14,7 @@
 #include "pdf.h"
 #include "png.h"
 #include "swf.h"
+#include "wav.h"
 #include "zip.h"
 #include "zlib.h"
 #include <stdlib.h>
@@ -36,6 +37,7 @@ void init_all_format_handlers(void) {
     g_format_handlers[FORMAT_PDF] = create_pdf_handler();
     g_format_handlers[FORMAT_PNG] = create_png_handler();
     g_format_handlers[FORMAT_SWF] = create_swf_handler();
+    g_format_handlers[FORMAT_WAV] = create_wav_handler();
     g_format_handlers[FORMAT_ZIP] = create_zip_handler();
     g_format_handlers[FORMAT_ZLIB] = create_zlib_handler();
     
