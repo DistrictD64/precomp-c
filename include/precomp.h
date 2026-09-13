@@ -185,6 +185,7 @@ typedef struct Precomp {
     void (*progress_callback)(float);
     PrecompFormatHandler** format_handlers;
     int format_handlers_count;
+    int last_detected_level;  /* Last detected compression level */
 } Precomp;
 
 /* Function declarations */

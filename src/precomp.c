@@ -97,6 +97,7 @@ Precomp* PrecompCreate(void) {
     precomp->progress_callback = NULL;
     precomp->format_handlers = NULL;
     precomp->format_handlers_count = 0;
+    precomp->last_detected_level = -1;  /* Initialize to -1 (no level detected) */
     
     /* Initialize utils module */
     precomp_utils_init();

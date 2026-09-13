@@ -34,27 +34,30 @@ typedef struct {
 } Bzip2FormatHeaderData;
 
 /* Function declarations */
-bool bzip2_quick_check(unsigned char* buffer, 
-                       size_t buffer_size,
-                       uintptr_t current_input_id, 
-                       long long original_input_pos);
+bool bzip2_quick_check(struct PrecompFormatHandler* self, 
+                       unsigned char* buffer, 
+                       uintptr_t input_id, 
+                       long long pos);
 
-precompression_result* bzip2_attempt_precompression(Precomp* precomp_mgr, 
+precompression_result* bzip2_attempt_precompression(struct PrecompFormatHandler* self,
+                                                     void* precomp_instance,
                                                      unsigned char* buffer, 
-                                                     size_t buffer_size,
-                                                     long long input_stream_pos);
+                                                     long long pos);
 
-PrecompFormatHeaderData* bzip2_read_format_header(RecursionContext* context, 
+PrecompFormatHeaderData* bzip2_read_format_header(struct PrecompFormatHandler* self,
+                                                   RecursionContext* context, 
                                                    signed char precomp_hdr_flags, 
                                                    SupportedFormats precomp_hdr_format);
 
-void bzip2_recompress(IStreamLike* precompressed_input, 
+void bzip2_recompress(struct PrecompFormatHandler* self,
+                      IStreamLike* precompressed_input, 
                       OStreamLike* recompressed_stream, 
                       PrecompFormatHeaderData* precomp_hdr_data, 
                       SupportedFormats precomp_hdr_format,
-                      void* tools);
+                      FormatHandlerTools* tools);
 
-void bzip2_write_pre_recursion_data(RecursionContext* context, 
+void bzip2_write_pre_recursion_data(struct PrecompFormatHandler* self,
+                                     RecursionContext* context, 
                                      PrecompFormatHeaderData* precomp_hdr_data);
 
 /* Format handler creation */
