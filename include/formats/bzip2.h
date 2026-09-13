@@ -14,14 +14,23 @@
 /* BZip2 precompression result */
 typedef struct {
     precompression_result base;
-    /* Add format-specific fields here */
+    uint32_t original_crc32;
+    uint32_t compressed_size;
+    uint8_t block_size_indicator;
+    int detected_level;
+    bool randomized;
 } bzip2_precompression_result;
 
 /* BZip2 format header data */
 typedef struct {
     PrecompFormatHeaderData base;
+    uint8_t block_size_indicator;  /* '1' through '9' */
+    uint32_t block_size;           /* Actual block size in bytes */
+    bool randomized;               /* Randomization flag */
     long long original_size;
     long long precompressed_size;
+    uint32_t original_crc32;
+    int detected_compression_level;
 } Bzip2FormatHeaderData;
 
 /* Function declarations */
