@@ -1,31 +1,90 @@
 # precomp-c
 
+## ⚠️ UNDER CONSTRUCTION
+
+**This project is currently under active development and is NOT ready for production use.**
+
+See [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) for the complete list of features being implemented.
+
+---
+
 A pure C port of precomp (originally precomp-cpp), a free precompression tool for advanced compression. This version is designed to be compiled with Tiny C Compiler (TCC) and other standard C compilers, making it highly portable across different platforms.
 
-## Features
+**Project Goal**: A stream decompressor/recompressor that preserves original compression parameters for exact file reconstruction, with super-compression capabilities for media files (images, audio, video) using better lossless codecs.
+
+**Pipeline Usage**: `tar → precomp-c → srep → zstd` → (reverse) → `tar extract`
+
+## Features (Planned/Under Development)
 
 - **Pure C99 code** - No C++ dependencies, compatible with TCC
 - **Cross-platform** - Works on Windows, Linux, macOS, BSD
-- **Self-contained** - All required libraries bundled in `contrib/`
-- **Multiple formats** - Support for ZIP, GZIP, PNG, JPEG, GIF, PDF, SWF, BZIP2, and more
+- **Exact Reconstruction** - Bit-for-bit identical output when decompressing
+- **Media Super-Compression** - Better lossless codecs for images, audio, video
+- **External Codec Support** - Plugin system for proprietary game codecs (Oodle, etc.)
+- **Multiple formats** - Support for ZIP, GZIP, PNG, JPEG, MP3, WebP, FLAC, ZSTD, LZMA, and more
 - **Flexible build system** - Shell scripts, batch files, and Makefile included
 
-## Supported Formats
+## Supported Formats (Target)
 
-| Format | Extension | Description |
-|--------|-----------|-------------|
-| Deflate | .deflate | Raw deflate compression |
-| GZIP | .gz | GNU Zip compression |
-| Zlib | .zlib | Zlib wrapper |
-| ZIP | .zip | ZIP archives |
-| BZIP2 | .bz2 | BZip2 compression |
-| PNG | .png | Portable Network Graphics |
-| JPEG | .jpg, .jpeg | Joint Photographic Experts Group |
-| GIF | .gif | Graphics Interchange Format |
-| PDF | .pdf | Portable Document Format |
-| SWF | .swf | Shockwave Flash |
-| MP3 | .mp3 | MPEG Audio Layer 3 |
-| Base64 | .b64 | Base64 encoding |
+### Compression Streams
+| Format | Status | Notes |
+|--------|--------|-------|
+| DEFLATE | ❌ Under Construction | Detect & preserve compression level |
+| GZIP | ❌ Under Construction | Full zlib integration |
+| ZLIB | ❌ Under Construction | Full zlib integration |
+| BZIP2 | ❌ Under Construction | bzip2 library |
+| ZIP | ❌ Under Construction | Archive support |
+| ZSTD | ❌ Planned | libzstd integration |
+| LZMA/XZ | ❌ Planned | liblzma integration |
+| LZO | ❌ Planned | liblzo integration |
+| LZX | ❌ Planned | libmspack integration |
+| Brotli | ❌ Planned | libbrotli integration |
+
+### Media Formats (with Super-Compression)
+| Format | Status | Super-Compression Target |
+|--------|--------|-------------------------|
+| PNG | ❌ Under Construction | brunsli WebP lossless |
+| JPEG | ❌ Under Construction | packjpg / WebP lossless |
+| GIF | ❌ Under Construction | PNG / WebP lossless |
+| WebP | ❌ Planned | brunsli lossless |
+| AVIF | ❌ Planned | AVIF lossless |
+| HEIC | ❌ Planned | HEVC lossless |
+| MP3 | ❌ Under Construction | packmp3 / FLAC |
+| OGG Vorbis | ❌ Planned | FLAC |
+| FLAC | ❌ Planned | FLAC optimization |
+| WAV | ❌ Planned | WavPack / FLAC |
+
+### Game Codecs (External DLL Loading)
+| Codec | Status | Notes |
+|-------|--------|-------|
+| Oodle (Kraken, Leviathan, etc.) | ❌ Planned | Load from game files |
+| Unity LZ4/LZMA | ❌ Planned | Load from game files |
+| EA Sports | ❌ Planned | Load from game files |
+| Rockstar RAGE | ❌ Planned | Load from game files |
+
+## Current Status
+
+**DO NOT USE IN PRODUCTION** - This is a work in progress.
+
+### Completed
+- [x] Project structure reorganization
+- [x] LICENSE file (Apache 2.0 + third-party notices)
+- [x] Implementation roadmap documentation
+- [x] External codec plugin interface (placeholder)
+- [x] Format handler directory structure
+
+### In Progress
+- [ ] Core infrastructure implementation
+- [ ] Build system updates
+- [ ] Contrib library integration
+- [ ] Format handler implementations
+
+### Not Started
+- [ ] All format handlers (see IMPLEMENTATION_ROADMAP.md)
+- [ ] Testing framework
+- [ ] Documentation
+
+For the complete implementation plan, see [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md).
 
 ## Directory Structure
 
